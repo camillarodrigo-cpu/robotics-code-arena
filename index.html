@@ -1,894 +1,1142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Robotics Code Arena</title>
+<title>Robotics Code Arena</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(255, 210, 63, .28), transparent 24%),
+        radial-gradient(circle at 85% 15%, rgba(255, 79, 79, .18), transparent 22%),
+        linear-gradient(135deg, #eef7ff, #ffffff 50%, #fff8df);
+    color: #17243d;
+    overflow-x: hidden;
+}
+
+/* ============================= */
+/* FLOATING BACKGROUND BUBBLES   */
+/* ============================= */
+
+.bubble {
+    position: fixed;
+    z-index: 0;
+    border-radius: 999px;
+    padding: 12px 18px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .5px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.10);
+    animation: floatBubble 7s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.blueBubble {
+    background: #1677ff;
+    color: white;
+}
+
+.yellowBubble {
+    background: #ffd83d;
+    color: #17243d;
+}
+
+.redBubble {
+    background: #ff5252;
+    color: white;
+}
+
+.b1 {
+    top: 10%;
+    left: 3%;
+}
+
+.b2 {
+    top: 23%;
+    right: 4%;
+    animation-delay: 1s;
+}
+
+.b3 {
+    bottom: 16%;
+    left: 4%;
+    animation-delay: 2s;
+}
+
+.b4 {
+    bottom: 8%;
+    right: 5%;
+    animation-delay: .5s;
+}
+
+.b5 {
+    top: 55%;
+    right: 2%;
+    animation-delay: 3s;
+}
+
+.b6 {
+    top: 42%;
+    left: 2%;
+    animation-delay: 1.5s;
+}
+
+@keyframes floatBubble {
+
+    0%, 100% {
+        transform: translateY(0) scale(1);
     }
 
-    body {
-      font-family: Arial, sans-serif;
-      background: #07111f;
-      color: white;
-      min-height: 100vh;
+    50% {
+        transform: translateY(-16px) scale(1.04);
     }
 
-    /* HEADER */
+}
 
-    header {
-      padding: 25px;
-      text-align: center;
-      border-bottom: 1px solid #24344d;
+/* ============================= */
+/* HEADER                        */
+/* ============================= */
+
+header {
+    position: relative;
+    z-index: 5;
+    padding: 22px 20px;
+    text-align: center;
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    border: 2px solid #dbe9f7;
+    border-radius: 999px;
+    padding: 9px 18px;
+    box-shadow: 0 8px 25px rgba(23,119,255,.10);
+    font-weight: 900;
+    color: #1677ff;
+}
+
+/* ============================= */
+/* ENTRY SCREEN                  */
+/* ============================= */
+
+#entryScreen {
+    position: relative;
+    z-index: 2;
+    max-width: 1080px;
+    margin: auto;
+    padding: 20px 20px 60px;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.robot {
+    font-size: 65px;
+    display: inline-block;
+    animation: robotBounce 2.5s ease-in-out infinite;
+}
+
+@keyframes robotBounce {
+
+    0%, 100% {
+        transform: translateY(0);
     }
 
-    header h1 {
-      font-size: 32px;
-      margin-bottom: 7px;
+    50% {
+        transform: translateY(-8px);
     }
 
-    header p {
-      color: #9fb0c8;
-    }
+}
 
-    /* MAIN MENU */
+.hero h1 {
+    margin-top: 5px;
+    font-size: clamp(32px, 5vw, 58px);
+    line-height: 1;
+    color: #1265d8;
+}
 
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 40px 20px;
-    }
+.hero h1 span {
+    color: #ff4f4f;
+}
 
-    .welcome {
-      text-align: center;
-      margin-bottom: 35px;
-    }
+.heroTag {
+    margin-top: 12px;
+    font-size: 17px;
+    color: #65758c;
+}
 
-    .welcome h2 {
-      font-size: 25px;
-      margin-bottom: 10px;
-    }
+.heroTag strong {
+    color: #17243d;
+}
 
-    .welcome p {
-      color: #9fb0c8;
+.entryGrid {
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 22px;
+    align-items: stretch;
+}
+
+.card {
+    background: rgba(255,255,255,.94);
+    border: 2px solid #e2edf7;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 18px 45px rgba(29,76,125,.12);
+}
+
+.entryCard {
+    border-top: 7px solid #1677ff;
+}
+
+.reminderCard {
+    border-top: 7px solid #ffd83d;
+}
+
+.card h2 {
+    font-size: 24px;
+    margin-bottom: 7px;
+}
+
+.subtitle {
+    color: #738299;
+    line-height: 1.5;
+    margin-bottom: 23px;
+}
+
+label {
+    display: block;
+    margin: 15px 0 7px;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: .5px;
+    color: #43536a;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 14px 15px;
+    border-radius: 12px;
+    border: 2px solid #dce8f4;
+    background: #f9fcff;
+    color: #17243d;
+    font-size: 15px;
+    outline: none;
+    transition: .2s;
+}
+
+input:focus,
+select:focus {
+    border-color: #1677ff;
+    box-shadow: 0 0 0 4px rgba(22,119,255,.10);
+}
+
+.enterButton {
+    width: 100%;
+    margin-top: 22px;
+    padding: 15px;
+    border: none;
+    border-radius: 14px;
+    background: #1677ff;
+    color: white;
+    font-size: 16px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(22,119,255,.25);
+    transition: .2s;
+}
+
+.enterButton:hover {
+    transform: translateY(-2px);
+    background: #0968e9;
+}
+
+.reminderTitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.reminderTitle span {
+    font-size: 30px;
+}
+
+.notice {
+    margin-top: 16px;
+    border-radius: 15px;
+    padding: 15px;
+    line-height: 1.45;
+}
+
+.noticeBlue {
+    background: #eaf4ff;
+    border-left: 5px solid #1677ff;
+}
+
+.noticeYellow {
+    background: #fff8d9;
+    border-left: 5px solid #ffd23f;
+}
+
+.noticeRed {
+    background: #fff0f0;
+    border-left: 5px solid #ff5252;
+}
+
+.notice strong {
+    display: block;
+    margin-bottom: 3px;
+}
+
+.thankYou {
+    margin-top: 18px;
+    padding: 16px;
+    text-align: center;
+    border: 2px dashed #bfd8f3;
+    border-radius: 15px;
+    color: #53647a;
+}
+
+.thankYou strong {
+    color: #1677ff;
+}
+
+/* ============================= */
+/* ARENA SCREEN                  */
+/* ============================= */
+
+#arenaScreen {
+    display: none;
+    position: relative;
+    z-index: 2;
+    max-width: 1150px;
+    margin: auto;
+    padding: 20px 20px 70px;
+}
+
+.arenaTop {
+    background: white;
+    border-radius: 22px;
+    padding: 22px;
+    box-shadow: 0 15px 35px rgba(29,76,125,.10);
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.studentHello h2 {
+    color: #1265d8;
+    margin-bottom: 5px;
+}
+
+.studentHello p {
+    color: #6d7c91;
+}
+
+.highScore {
+    background: #fff6ca;
+    border: 2px solid #ffd83d;
+    border-radius: 15px;
+    padding: 11px 16px;
+    text-align: center;
+}
+
+.highScore small {
+    display: block;
+    color: #7b6b24;
+    margin-bottom: 3px;
+    font-weight: bold;
+}
+
+.highScore strong {
+    color: #17243d;
+}
+
+.arenaHeading {
+    text-align: center;
+    margin: 35px 0 22px;
+}
+
+.arenaHeading h2 {
+    font-size: 30px;
+}
+
+.arenaHeading p {
+    color: #6d7c91;
+    margin-top: 7px;
+}
+
+.games {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.gameCard {
+    position: relative;
+    overflow: hidden;
+    background: white;
+    border-radius: 22px;
+    padding: 27px;
+    box-shadow: 0 15px 35px rgba(29,76,125,.12);
+    transition: .25s;
+}
+
+.gameCard:hover {
+    transform: translateY(-7px);
+}
+
+.gameCard.blue {
+    border-top: 7px solid #1677ff;
+}
+
+.gameCard.yellow {
+    border-top: 7px solid #ffd83d;
+}
+
+.gameCard.red {
+    border-top: 7px solid #ff5252;
+}
+
+.gameNumber {
+    position: absolute;
+    right: 18px;
+    top: 15px;
+    font-size: 44px;
+    font-weight: 900;
+    opacity: .07;
+}
+
+.gameIcon {
+    font-size: 48px;
+    margin-bottom: 14px;
+}
+
+.gameCard h3 {
+    font-size: 22px;
+    margin-bottom: 7px;
+}
+
+.gameType {
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: #75849a;
+    margin-bottom: 13px;
+}
+
+.gameCard p {
+    color: #68788e;
+    line-height: 1.55;
+    min-height: 75px;
+}
+
+.gameInfo {
+    margin-top: 17px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.pill {
+    background: #f0f5fa;
+    border-radius: 999px;
+    padding: 7px 10px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.playButton {
+    width: 100%;
+    margin-top: 20px;
+    border: none;
+    padding: 14px;
+    border-radius: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.playBlue {
+    background: #1677ff;
+    color: white;
+}
+
+.playYellow {
+    background: #ffd83d;
+    color: #17243d;
+}
+
+.playRed {
+    background: #ff5252;
+    color: white;
+}
+
+.playButton:hover {
+    transform: scale(1.02);
+}
+
+.miniReminder {
+    margin-top: 30px;
+    text-align: center;
+    color: #6d7c91;
+    font-size: 13px;
+}
+
+.miniReminder strong {
+    color: #ff5252;
+}
+
+/* ============================= */
+/* TEMP GAME MESSAGE             */
+/* ============================= */
+
+#gameMessage {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    background: rgba(18,35,61,.55);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal {
+    width: min(500px, 100%);
+    background: white;
+    border-radius: 24px;
+    padding: 35px;
+    text-align: center;
+    box-shadow: 0 25px 70px rgba(0,0,0,.25);
+}
+
+.modalIcon {
+    font-size: 60px;
+}
+
+.modal h2 {
+    margin: 10px 0;
+}
+
+.modal p {
+    color: #6d7c91;
+    line-height: 1.5;
+}
+
+.modal button {
+    margin-top: 20px;
+    border: none;
+    border-radius: 12px;
+    padding: 13px 22px;
+    background: #1677ff;
+    color: white;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+/* ============================= */
+/* RESPONSIVE                    */
+/* ============================= */
+
+@media (max-width: 850px) {
+
+    .entryGrid {
+        grid-template-columns: 1fr;
     }
 
     .games {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 20px;
-    }
-
-    .game-card {
-      background: #101d30;
-      border: 1px solid #263a57;
-      border-radius: 16px;
-      padding: 25px;
-      transition: 0.2s;
-    }
-
-    .game-card:hover {
-      transform: translateY(-4px);
-      border-color: #4fa3ff;
-    }
-
-    .game-icon {
-      font-size: 42px;
-      margin-bottom: 15px;
-    }
-
-    .game-card h3 {
-      margin-bottom: 10px;
-    }
-
-    .game-card p {
-      color: #9fb0c8;
-      line-height: 1.5;
-      min-height: 70px;
-    }
-
-    .game-card button {
-      width: 100%;
-      padding: 13px;
-      margin-top: 20px;
-      border: none;
-      border-radius: 10px;
-      background: #2383e2;
-      color: white;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .game-card button:hover {
-      background: #409cff;
-    }
-
-    .locked {
-      opacity: 0.55;
-    }
-
-    .locked button {
-      background: #435066;
-      cursor: not-allowed;
-    }
-
-    /* GAME */
-
-    #gameScreen {
-      display: none;
-      max-width: 850px;
-      margin: auto;
-      padding: 30px 20px 60px;
-    }
-
-    .game-top {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .stat {
-      background: #101d30;
-      border: 1px solid #263a57;
-      border-radius: 10px;
-      padding: 10px 15px;
-    }
-
-    .progress-container {
-      width: 100%;
-      height: 10px;
-      background: #17263a;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 25px;
-    }
-
-    #progressBar {
-      height: 100%;
-      width: 10%;
-      background: #2383e2;
-      transition: 0.3s;
-    }
-
-    .challenge {
-      background: #101d30;
-      border: 1px solid #263a57;
-      border-radius: 16px;
-      padding: 25px;
-    }
-
-    .challenge h2 {
-      margin-bottom: 8px;
-    }
-
-    .mission {
-      color: #9fb0c8;
-      margin-bottom: 20px;
-      line-height: 1.5;
-    }
-
-    pre {
-      background: #050b13;
-      border-radius: 12px;
-      padding: 20px;
-      overflow-x: auto;
-      line-height: 1.7;
-      margin-bottom: 20px;
-      color: #cde3ff;
-    }
-
-    .choices {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .choice {
-      padding: 14px;
-      background: #17263a;
-      color: white;
-      border: 1px solid #314762;
-      border-radius: 10px;
-      cursor: pointer;
-      text-align: left;
-      font-size: 14px;
-    }
-
-    .choice:hover {
-      border-color: #4fa3ff;
-      background: #1d3049;
-    }
-
-    #feedback {
-      margin-top: 18px;
-      padding: 15px;
-      border-radius: 10px;
-      background: #17263a;
-      line-height: 1.5;
-    }
-
-    #nextButton {
-      display: none;
-      width: 100%;
-      margin-top: 15px;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      background: #2383e2;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .back-button {
-      background: transparent;
-      color: #9fb0c8;
-      border: none;
-      cursor: pointer;
-      margin-bottom: 20px;
-    }
-
-    /* RESULTS */
-
-    #resultScreen {
-      display: none;
-      text-align: center;
-      max-width: 600px;
-      margin: 60px auto;
-      padding: 30px 20px;
-    }
-
-    .result-card {
-      background: #101d30;
-      border: 1px solid #263a57;
-      border-radius: 18px;
-      padding: 35px;
-    }
-
-    .result-card h2 {
-      font-size: 30px;
-      margin-bottom: 15px;
-    }
-
-    .big-score {
-      font-size: 42px;
-      font-weight: bold;
-      margin: 20px 0;
-      color: #58aaff;
-    }
-
-    .play-again {
-      padding: 14px 25px;
-      margin-top: 20px;
-      border: none;
-      border-radius: 10px;
-      background: #2383e2;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    @media(max-width: 600px) {
-      .choices {
         grid-template-columns: 1fr;
-      }
-
-      header h1 {
-        font-size: 25px;
-      }
     }
-  </style>
+
+    .arenaTop {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .bubble {
+        opacity: .45;
+        font-size: 10px;
+    }
+
+}
+
+</style>
 </head>
 
 <body>
 
+<!-- FLOATING REMINDERS -->
+
+<div class="bubble blueBubble b1">
+    PLEASE DON'T CHEAT 👀
+</div>
+
+<div class="bubble yellowBubble b2">
+    THIS IS NOT GRADED ⭐
+</div>
+
+<div class="bubble redBubble b3">
+    TRUST YOUR OWN ANSWER!
+</div>
+
+<div class="bubble blueBubble b4">
+    LEARN FROM MISTAKES 💡
+</div>
+
+<div class="bubble yellowBubble b5">
+    HAVE FUN, ENGINEER! 🤖
+</div>
+
+<div class="bubble redBubble b6">
+    THINK BEFORE YOU CLICK!
+</div>
+
+
 <header>
-  <h1>🤖 ROBOTICS CODE ARENA</h1>
-  <p>Learn. Code. Build. Compete.</p>
+
+    <div class="logo">
+        🤖 ROBOTICS CODE ARENA
+    </div>
+
 </header>
 
-<!-- MAIN MENU -->
 
-<main id="mainMenu" class="container">
+<!-- ========================= -->
+<!-- STUDENT ENTRY             -->
+<!-- ========================= -->
 
-  <section class="welcome">
-    <h2>Welcome, Engineer!</h2>
-    <p>Choose your training challenge.</p>
-  </section>
+<main id="entryScreen">
 
-  <section class="games">
+    <section class="hero">
 
-    <div class="game-card">
-      <div class="game-icon">💻</div>
-      <h3>CODE QUEST</h3>
-      <p>
-        Master Arduino C++ through coding,
-        debugging, and logic challenges.
-      </p>
+        <div class="robot">
+            🤖
+        </div>
 
-      <button onclick="startGame()">
-        PLAY CODE QUEST
-      </button>
-    </div>
+        <h1>
+            ROBOTICS <span>CODE ARENA</span>
+        </h1>
 
-    <div class="game-card locked">
-      <div class="game-icon">🔌</div>
-      <h3>CIRCUIT LAB</h3>
-      <p>
-        Identify components, analyze circuits,
-        and solve wiring problems.
-      </p>
+        <p class="heroTag">
+            <strong>Learn.</strong>
+            Play.
+            Challenge Yourself.
+        </p>
 
-      <button disabled>
-        🔒 COMING SOON
-      </button>
-    </div>
+    </section>
 
-    <div class="game-card locked">
-      <div class="game-icon">🧠</div>
-      <h3>ROBO RECALL</h3>
-      <p>
-        Test your knowledge of Robotics terms,
-        components, and functions.
-      </p>
 
-      <button disabled>
-        🔒 COMING SOON
-      </button>
-    </div>
+    <section class="entryGrid">
 
-  </section>
+        <!-- STUDENT INFO -->
+
+        <div class="card entryCard">
+
+            <h2>
+                👋 Welcome, Engineer!
+            </h2>
+
+            <p class="subtitle">
+                Tell us who you are before entering
+                the Robotics Code Arena.
+            </p>
+
+
+            <label for="studentName">
+                FULL NAME
+            </label>
+
+            <input
+                id="studentName"
+                type="text"
+                placeholder="Enter your full name"
+                autocomplete="off"
+            >
+
+
+            <label for="gradeLevel">
+                GRADE LEVEL
+            </label>
+
+            <select id="gradeLevel">
+
+                <option value="">
+                    Select your grade level
+                </option>
+
+                <option value="Grade 7">
+                    Grade 7
+                </option>
+
+                <option value="Grade 8">
+                    Grade 8
+                </option>
+
+            </select>
+
+
+            <label for="studentSection">
+                SECTION
+            </label>
+
+            <input
+                id="studentSection"
+                type="text"
+                placeholder="Example: St. Raphael"
+                autocomplete="off"
+            >
+
+
+            <button
+                class="enterButton"
+                onclick="enterArena()"
+            >
+                🚀 ENTER THE ARENA
+            </button>
+
+        </div>
+
+
+        <!-- REMINDERS -->
+
+        <div class="card reminderCard">
+
+            <div class="reminderTitle">
+
+                <span>📢</span>
+
+                <div>
+                    <h2>Before You Enter</h2>
+                    <p class="subtitle" style="margin:0;">
+                        A few friendly reminders.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="notice noticeRed">
+
+                <strong>
+                    👀 Please don't cheat.
+                </strong>
+
+                Answer using your own knowledge.
+                Avoid copying answers from your classmates.
+
+            </div>
+
+
+            <div class="notice noticeYellow">
+
+                <strong>
+                    ⭐ This is NOT graded.
+                </strong>
+
+                No pressure! This arena is made for
+                practice, review, and improving your skills.
+
+            </div>
+
+
+            <div class="notice noticeBlue">
+
+                <strong>
+                    💡 Mistakes are welcome.
+                </strong>
+
+                Don't be afraid to get something wrong.
+                Learn from it and try again.
+
+            </div>
+
+
+            <div class="thankYou">
+
+                <strong>
+                    Thank you for checking this out! 🤖
+                </strong>
+
+                <br><br>
+
+                Have fun and challenge yourself!
+
+            </div>
+
+        </div>
+
+    </section>
 
 </main>
 
-<!-- CODE QUEST -->
 
-<section id="gameScreen">
+<!-- ========================= -->
+<!-- GAME ARENA                -->
+<!-- ========================= -->
 
-  <button class="back-button" onclick="goHome()">
-    ← Back to Code Arena
-  </button>
+<main id="arenaScreen">
 
-  <div class="game-top">
+    <section class="arenaTop">
 
-    <div class="stat">
-      🎯 Level:
-      <strong id="levelNumber">1</strong>/10
+        <div class="studentHello">
+
+            <h2 id="welcomeName">
+                Welcome!
+            </h2>
+
+            <p id="studentDetails"></p>
+
+        </div>
+
+
+        <div class="highScore">
+
+            <small>
+                🏆 CURRENT HIGH SCORE
+            </small>
+
+            <strong>
+                Coming soon!
+            </strong>
+
+        </div>
+
+    </section>
+
+
+    <section class="arenaHeading">
+
+        <h2>
+            🎮 Choose Your Challenge
+        </h2>
+
+        <p>
+            Three ways to test your Robotics skills.
+        </p>
+
+    </section>
+
+
+    <section class="games">
+
+        <!-- CODE QUEST -->
+
+        <article class="gameCard blue">
+
+            <div class="gameNumber">
+                01
+            </div>
+
+            <div class="gameIcon">
+                💻
+            </div>
+
+            <div class="gameType">
+                CODING CHALLENGE
+            </div>
+
+            <h3>
+                CODE QUEST
+            </h3>
+
+            <p>
+                Read code, complete missing commands,
+                hunt bugs, and predict what Arduino
+                will do.
+            </p>
+
+            <div class="gameInfo">
+
+                <span class="pill">
+                    🎯 10 Levels
+                </span>
+
+                <span class="pill">
+                    🎲 Random Questions
+                </span>
+
+                <span class="pill">
+                    ⏱️ Timed
+                </span>
+
+            </div>
+
+            <button
+                class="playButton playBlue"
+                onclick="openGame('Code Quest','💻')"
+            >
+                PLAY CODE QUEST →
+            </button>
+
+        </article>
+
+
+        <!-- CIRCUIT QUEST -->
+
+        <article class="gameCard yellow">
+
+            <div class="gameNumber">
+                02
+            </div>
+
+            <div class="gameIcon">
+                🔌
+            </div>
+
+            <div class="gameType">
+                CIRCUIT CHALLENGE
+            </div>
+
+            <h3>
+                CIRCUIT QUEST
+            </h3>
+
+            <p>
+                Identify components, analyze connections,
+                and troubleshoot Arduino circuits.
+            </p>
+
+            <div class="gameInfo">
+
+                <span class="pill">
+                    🎯 10 Levels
+                </span>
+
+                <span class="pill">
+                    🔌 Circuits
+                </span>
+
+                <span class="pill">
+                    ⏱️ Timed
+                </span>
+
+            </div>
+
+            <button
+                class="playButton playYellow"
+                onclick="openGame('Circuit Quest','🔌')"
+            >
+                PLAY CIRCUIT QUEST →
+            </button>
+
+        </article>
+
+
+        <!-- ROBO RECALL -->
+
+        <article class="gameCard red">
+
+            <div class="gameNumber">
+                03
+            </div>
+
+            <div class="gameIcon">
+                🧠
+            </div>
+
+            <div class="gameType">
+                KNOWLEDGE CHALLENGE
+            </div>
+
+            <h3>
+                ROBO RECALL
+            </h3>
+
+            <p>
+                Race against the clock while recalling
+                Robotics terms, commands, components,
+                and functions.
+            </p>
+
+            <div class="gameInfo">
+
+                <span class="pill">
+                    🎯 10 Levels
+                </span>
+
+                <span class="pill">
+                    ⚡ Rapid Fire
+                </span>
+
+                <span class="pill">
+                    ⏱️ Timed
+                </span>
+
+            </div>
+
+            <button
+                class="playButton playRed"
+                onclick="openGame('Robo Recall','🧠')"
+            >
+                PLAY ROBO RECALL →
+            </button>
+
+        </article>
+
+    </section>
+
+
+    <div class="miniReminder">
+
+        👀 Remember:
+        <strong>don't copy.</strong>
+
+        This is not graded —
+        just play, practice, and improve.
+
     </div>
 
-    <div class="stat">
-      ⭐ XP:
-      <strong id="score">0</strong>
+</main>
+
+
+<!-- TEMPORARY MODAL -->
+
+<div id="gameMessage">
+
+    <div class="modal">
+
+        <div
+            id="modalIcon"
+            class="modalIcon"
+        >
+            💻
+        </div>
+
+        <h2 id="modalTitle">
+            Code Quest
+        </h2>
+
+        <p>
+            You're ready! The actual game questions
+            will be added in our next step.
+            <br><br>
+            For now, we're testing the new
+            Robotics Code Arena design.
+        </p>
+
+        <button onclick="closeGameMessage()">
+            GOT IT!
+        </button>
+
     </div>
 
-    <div class="stat">
-      ⏱️ Time:
-      <strong id="timer">30</strong>s
-    </div>
+</div>
 
-  </div>
-
-  <div class="progress-container">
-    <div id="progressBar"></div>
-  </div>
-
-  <div class="challenge">
-
-    <h2 id="levelTitle">
-      Level 1
-    </h2>
-
-    <p id="mission" class="mission"></p>
-
-    <pre><code id="codeDisplay"></code></pre>
-
-    <div id="choices" class="choices"></div>
-
-    <div id="feedback">
-      Select your answer.
-    </div>
-
-    <button id="nextButton" onclick="nextLevel()">
-      NEXT LEVEL →
-    </button>
-
-  </div>
-
-</section>
-
-<!-- RESULTS -->
-
-<section id="resultScreen">
-
-  <div class="result-card">
-
-    <div style="font-size:55px;">🏆</div>
-
-    <h2>CODE QUEST COMPLETE!</h2>
-
-    <p>Your final score:</p>
-
-    <div id="finalScore" class="big-score">
-      0 XP
-    </div>
-
-    <p id="rankText"></p>
-
-    <button class="play-again" onclick="restartGame()">
-      PLAY AGAIN
-    </button>
-
-  </div>
-
-</section>
 
 <script>
 
-const levels = [
+function enterArena() {
 
-  {
-    title: "LEVEL 1 — CODE ROOKIE",
-    mission: "Which is the correct C++ variable declaration?",
-    code: "Choose the correct line of code.",
-    choices: [
-      "int ledPin = 8;",
-      "int = ledPin 8;",
-      "ledPin int = 8",
-      "int ledPin == 8;"
-    ],
-    answer: 0,
-    explanation:
-      "Correct! int declares an integer variable, ledPin is the variable name, and 8 is its value."
-  },
+    const name =
+        document
+        .getElementById("studentName")
+        .value
+        .trim();
 
-  {
-    title: "LEVEL 2 — SYNTAX FIXER",
-    mission: "Which line correctly fixes the missing semicolon?",
-    code:
-`int greenLED = 7
+    const grade =
+        document
+        .getElementById("gradeLevel")
+        .value;
 
-void setup() {
-  pinMode(greenLED, OUTPUT);
-}`,
-    choices: [
-      "int greenLED = 7;",
-      "int greenLED; = 7",
-      "int greenLED = 7:",
-      "int greenLED == 7;"
-    ],
-    answer: 0,
-    explanation:
-      "Correct! Arduino C++ statements such as variable declarations normally end with a semicolon."
-  },
+    const section =
+        document
+        .getElementById("studentSection")
+        .value
+        .trim();
 
-  {
-    title: "LEVEL 3 — PIN COMMANDER",
-    mission: "The LED receives commands from Arduino. Complete the code.",
-    code:
-`int led = 8;
 
-void setup() {
-  pinMode(led, ______);
-}`,
-    choices: [
-      "INPUT",
-      "OUTPUT",
-      "HIGH",
-      "LOW"
-    ],
-    answer: 1,
-    explanation:
-      "Correct! The LED is an output device, so its pin should be configured as OUTPUT."
-  },
+    if (!name || !grade || !section) {
 
-  {
-    title: "LEVEL 4 — DIGITAL CONTROL",
-    mission: "Which command turns the LED ON?",
-    code:
-`int led = 8;
+        alert(
+            "Please enter your name, grade level, and section before entering the arena."
+        );
 
-void loop() {
-  __________
-}`,
-    choices: [
-      "digitalWrite(led, HIGH);",
-      "digitalRead(led);",
-      "digitalWrite(led, LOW);",
-      "analogRead(led);"
-    ],
-    answer: 0,
-    explanation:
-      "Correct! digitalWrite with HIGH sends a HIGH signal to the LED pin."
-  },
+        return;
 
-  {
-    title: "LEVEL 5 — INPUT SCANNER",
-    mission: "Which function should read the push button state?",
-    code:
-`int button = 2;
-
-void loop() {
-  int state = __________(button);
-}`,
-    choices: [
-      "digitalWrite",
-      "analogWrite",
-      "digitalRead",
-      "pinMode"
-    ],
-    answer: 2,
-    explanation:
-      "Correct! digitalRead() reads the HIGH or LOW state of a digital input."
-  },
-
-  {
-    title: "LEVEL 6 — ANALOG SCANNER",
-    mission: "The MQ-135 sensor is connected to A0. Which function reads its analog value?",
-    code:
-`int airValue;
-
-void loop() {
-  airValue = __________(A0);
-}`,
-    choices: [
-      "digitalRead",
-      "analogRead",
-      "digitalWrite",
-      "pinMode"
-    ],
-    answer: 1,
-    explanation:
-      "Correct! analogRead(A0) reads the analog sensor value."
-  },
-
-  {
-    title: "LEVEL 7 — LOGIC GATE",
-    mission: "The red LED should turn ON when airValue is greater than 300.",
-    code:
-`if (airValue _____ 300) {
-  digitalWrite(redLED, HIGH);
-}
-else {
-  digitalWrite(redLED, LOW);
-}`,
-    choices: [
-      "<",
-      "=",
-      ">",
-      "=="
-    ],
-    answer: 2,
-    explanation:
-      "Correct! The > operator means greater than."
-  },
-
-  {
-    title: "LEVEL 8 — CODE DETECTIVE",
-    mission: "Find the incorrect part of the program.",
-    code:
-`int redLED = 8;
-
-void setup() {
-  pinMode(redLED, INPUT);
-}
-
-void loop() {
-  digitalWrite(redLED, HIGH);
-}`,
-    choices: [
-      "int redLED = 8;",
-      "void setup()",
-      "pinMode(redLED, INPUT);",
-      "digitalWrite(redLED, HIGH);"
-    ],
-    answer: 2,
-    explanation:
-      "Bug found! Since redLED is being controlled by Arduino, its pin mode should be OUTPUT."
-  },
-
-  {
-    title: "LEVEL 9 — OUTPUT PREDICTOR",
-    mission: "airValue is 425. What will happen to the red LED?",
-    code:
-`int airValue = 425;
-
-if (airValue > 300) {
-  digitalWrite(redLED, HIGH);
-}
-else {
-  digitalWrite(redLED, LOW);
-}`,
-    choices: [
-      "The red LED turns ON.",
-      "The red LED turns OFF.",
-      "Nothing happens.",
-      "Arduino stops."
-    ],
-    answer: 0,
-    explanation:
-      "Correct! 425 is greater than 300, so the IF block runs and the red LED is set to HIGH."
-  },
-
-  {
-    title: "LEVEL 10 — BOSS CODE 👑",
-    mission: "The air quality warning system is broken. Which line contains the main logic error?",
-    code:
-`airValue = analogRead(A0);
-
-if (airValue > 300) {
-
-  digitalWrite(redLED, LOW);
-  digitalWrite(greenLED, LOW);
-
-}
-else {
-
-  digitalWrite(redLED, LOW);
-  digitalWrite(greenLED, HIGH);
-
-}`,
-    choices: [
-      "airValue = analogRead(A0);",
-      "if (airValue > 300)",
-      "digitalWrite(redLED, LOW); inside IF",
-      "digitalWrite(greenLED, HIGH); inside ELSE"
-    ],
-    answer: 2,
-    explanation:
-      "Boss defeated! When airValue is above 300, the warning red LED should be HIGH, not LOW."
-  }
-
-];
-
-let currentLevel = 0;
-let score = 0;
-let timeLeft = 30;
-let timerInterval;
-let answered = false;
-
-function startGame() {
-
-  currentLevel = 0;
-  score = 0;
-
-  document.getElementById("mainMenu").style.display = "none";
-  document.getElementById("resultScreen").style.display = "none";
-  document.getElementById("gameScreen").style.display = "block";
-
-  loadLevel();
-}
-
-function loadLevel() {
-
-  answered = false;
-
-  const level = levels[currentLevel];
-
-  document.getElementById("levelNumber").textContent =
-    currentLevel + 1;
-
-  document.getElementById("levelTitle").textContent =
-    level.title;
-
-  document.getElementById("mission").textContent =
-    level.mission;
-
-  document.getElementById("codeDisplay").textContent =
-    level.code;
-
-  document.getElementById("score").textContent =
-    score;
-
-  document.getElementById("progressBar").style.width =
-    ((currentLevel + 1) / levels.length * 100) + "%";
-
-  document.getElementById("feedback").textContent =
-    "Select your answer.";
-
-  document.getElementById("nextButton").style.display =
-    "none";
-
-  const choicesContainer =
-    document.getElementById("choices");
-
-  choicesContainer.innerHTML = "";
-
-  level.choices.forEach((choice, index) => {
-
-    const button =
-      document.createElement("button");
-
-    button.className = "choice";
-    button.textContent = choice;
-
-    button.onclick = function() {
-      checkAnswer(index);
-    };
-
-    choicesContainer.appendChild(button);
-
-  });
-
-  startTimer();
-}
-
-function startTimer() {
-
-  clearInterval(timerInterval);
-
-  timeLeft =
-    currentLevel === 9 ? 60 : 30;
-
-  document.getElementById("timer").textContent =
-    timeLeft;
-
-  timerInterval = setInterval(function() {
-
-    timeLeft--;
-
-    document.getElementById("timer").textContent =
-      timeLeft;
-
-    if (timeLeft <= 0) {
-
-      clearInterval(timerInterval);
-
-      if (!answered) {
-
-        answered = true;
-
-        document.getElementById("feedback").innerHTML =
-          "⏰ Time's up! No XP earned for this level.";
-
-        disableChoices();
-
-        document.getElementById("nextButton").style.display =
-          "block";
-      }
     }
 
-  }, 1000);
+
+    document
+        .getElementById("entryScreen")
+        .style
+        .display = "none";
+
+
+    document
+        .getElementById("arenaScreen")
+        .style
+        .display = "block";
+
+
+    document
+        .getElementById("welcomeName")
+        .textContent =
+        "Welcome, " +
+        name.split(" ")[0] +
+        "! 👋";
+
+
+    document
+        .getElementById("studentDetails")
+        .textContent =
+        grade + " • " + section;
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
 }
 
-function checkAnswer(selected) {
 
-  if (answered) return;
+function openGame(gameName, icon) {
 
-  answered = true;
+    document
+        .getElementById("modalTitle")
+        .textContent =
+        gameName;
 
-  clearInterval(timerInterval);
 
-  const level = levels[currentLevel];
+    document
+        .getElementById("modalIcon")
+        .textContent =
+        icon;
 
-  if (selected === level.answer) {
 
-    let earnedXP = 100;
+    document
+        .getElementById("gameMessage")
+        .style
+        .display = "flex";
 
-    if (timeLeft >= 20) {
-      earnedXP += 50;
-    }
-    else if (timeLeft >= 10) {
-      earnedXP += 25;
-    }
-
-    score += earnedXP;
-
-    document.getElementById("feedback").innerHTML =
-      "✅ <strong>Correct! +" +
-      earnedXP +
-      " XP</strong><br><br>" +
-      level.explanation;
-
-  }
-
-  else {
-
-    document.getElementById("feedback").innerHTML =
-      "❌ <strong>Incorrect.</strong><br><br>" +
-      level.explanation;
-
-  }
-
-  document.getElementById("score").textContent =
-    score;
-
-  disableChoices();
-
-  document.getElementById("nextButton").style.display =
-    "block";
 }
 
-function disableChoices() {
 
-  const buttons =
-    document.querySelectorAll(".choice");
+function closeGameMessage() {
 
-  buttons.forEach(function(button) {
-    button.disabled = true;
-  });
-}
+    document
+        .getElementById("gameMessage")
+        .style
+        .display = "none";
 
-function nextLevel() {
-
-  currentLevel++;
-
-  if (currentLevel >= levels.length) {
-
-    finishGame();
-
-  }
-
-  else {
-
-    loadLevel();
-
-  }
-}
-
-function finishGame() {
-
-  clearInterval(timerInterval);
-
-  document.getElementById("gameScreen").style.display =
-    "none";
-
-  document.getElementById("resultScreen").style.display =
-    "block";
-
-  document.getElementById("finalScore").textContent =
-    score + " XP";
-
-  let rank;
-
-  if (score >= 1300) {
-    rank = "👑 C++ CODE MASTER";
-  }
-
-  else if (score >= 1000) {
-    rank = "💻 ARDUINO DEBUGGER";
-  }
-
-  else if (score >= 700) {
-    rank = "🤖 CODE EXPLORER";
-  }
-
-  else {
-    rank = "🔧 CODE ROOKIE";
-  }
-
-  document.getElementById("rankText").innerHTML =
-    "Your Rank:<br><strong>" + rank + "</strong>";
-}
-
-function restartGame() {
-
-  document.getElementById("resultScreen").style.display =
-    "none";
-
-  startGame();
-}
-
-function goHome() {
-
-  clearInterval(timerInterval);
-
-  document.getElementById("gameScreen").style.display =
-    "none";
-
-  document.getElementById("resultScreen").style.display =
-    "none";
-
-  document.getElementById("mainMenu").style.display =
-    "block";
 }
 
 </script>
