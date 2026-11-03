@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Robotics Code Arena</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #07111f;
+      color: white;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+
+    header {
+      padding: 25px;
+      text-align: center;
+      border-bottom: 1px solid #24344d;
+    }
+
+    header h1 {
+      font-size: 32px;
+      margin-bottom: 7px;
+    }
+
+    header p {
+      color: #9fb0c8;
+    }
+
+    /* MAIN MENU */
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    .welcome {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .welcome h2 {
+      font-size: 25px;
+      margin-bottom: 10px;
+    }
+
+    .welcome p {
+      color: #9fb0c8;
+    }
+
+    .games {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+    }
+
+    .game-card {
+      background: #101d30;
+      border: 1px solid #263a57;
+      border-radius: 16px;
+      padding: 25px;
+      transition: 0.2s;
+    }
+
+    .game-card:hover {
+      transform: translateY(-4px);
+      border-color: #4fa3ff;
+    }
+
+    .game-icon {
+      font-size: 42px;
+      margin-bottom: 15px;
+    }
+
+    .game-card h3 {
+      margin-bottom: 10px;
+    }
+
+    .game-card p {
+      color: #9fb0c8;
+      line-height: 1.5;
+      min-height: 70px;
+    }
+
+    .game-card button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 10px;
+      background: #2383e2;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .game-card button:hover {
+      background: #409cff;
+    }
+
+    .locked {
+      opacity: 0.55;
+    }
+
+    .locked button {
+      background: #435066;
+      cursor: not-allowed;
+    }
+
+    /* GAME */
+
+    #gameScreen {
+      display: none;
+      max-width: 850px;
+      margin: auto;
+      padding: 30px 20px 60px;
+    }
+
+    .game-top {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      background: #101d30;
+      border: 1px solid #263a57;
+      border-radius: 10px;
+      padding: 10px 15px;
+    }
+
+    .progress-container {
+      width: 100%;
+      height: 10px;
+      background: #17263a;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 25px;
+    }
+
+    #progressBar {
+      height: 100%;
+      width: 10%;
+      background: #2383e2;
+      transition: 0.3s;
+    }
+
+    .challenge {
+      background: #101d30;
+      border: 1px solid #263a57;
+      border-radius: 16px;
+      padding: 25px;
+    }
+
+    .challenge h2 {
+      margin-bottom: 8px;
+    }
+
+    .mission {
+      color: #9fb0c8;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    pre {
+      background: #050b13;
+      border-radius: 12px;
+      padding: 20px;
+      overflow-x: auto;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      color: #cde3ff;
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .choice {
+      padding: 14px;
+      background: #17263a;
+      color: white;
+      border: 1px solid #314762;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .choice:hover {
+      border-color: #4fa3ff;
+      background: #1d3049;
+    }
+
+    #feedback {
+      margin-top: 18px;
+      padding: 15px;
+      border-radius: 10px;
+      background: #17263a;
+      line-height: 1.5;
+    }
+
+    #nextButton {
+      display: none;
+      width: 100%;
+      margin-top: 15px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #2383e2;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .back-button {
+      background: transparent;
+      color: #9fb0c8;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    /* RESULTS */
+
+    #resultScreen {
+      display: none;
+      text-align: center;
+      max-width: 600px;
+      margin: 60px auto;
+      padding: 30px 20px;
+    }
+
+    .result-card {
+      background: #101d30;
+      border: 1px solid #263a57;
+      border-radius: 18px;
+      padding: 35px;
+    }
+
+    .result-card h2 {
+      font-size: 30px;
+      margin-bottom: 15px;
+    }
+
+    .big-score {
+      font-size: 42px;
+      font-weight: bold;
+      margin: 20px 0;
+      color: #58aaff;
+    }
+
+    .play-again {
+      padding: 14px 25px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 10px;
+      background: #2383e2;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    @media(max-width: 600px) {
+      .choices {
+        grid-template-columns: 1fr;
+      }
+
+      header h1 {
+        font-size: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🤖 ROBOTICS CODE ARENA</h1>
+  <p>Learn. Code. Build. Compete.</p>
+</header>
+
+<!-- MAIN MENU -->
+
+<main id="mainMenu" class="container">
+
+  <section class="welcome">
+    <h2>Welcome, Engineer!</h2>
+    <p>Choose your training challenge.</p>
+  </section>
+
+  <section class="games">
+
+    <div class="game-card">
+      <div class="game-icon">💻</div>
+      <h3>CODE QUEST</h3>
+      <p>
+        Master Arduino C++ through coding,
+        debugging, and logic challenges.
+      </p>
+
+      <button onclick="startGame()">
+        PLAY CODE QUEST
+      </button>
+    </div>
+
+    <div class="game-card locked">
+      <div class="game-icon">🔌</div>
+      <h3>CIRCUIT LAB</h3>
+      <p>
+        Identify components, analyze circuits,
+        and solve wiring problems.
+      </p>
+
+      <button disabled>
+        🔒 COMING SOON
+      </button>
+    </div>
+
+    <div class="game-card locked">
+      <div class="game-icon">🧠</div>
+      <h3>ROBO RECALL</h3>
+      <p>
+        Test your knowledge of Robotics terms,
+        components, and functions.
+      </p>
+
+      <button disabled>
+        🔒 COMING SOON
+      </button>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- CODE QUEST -->
+
+<section id="gameScreen">
+
+  <button class="back-button" onclick="goHome()">
+    ← Back to Code Arena
+  </button>
+
+  <div class="game-top">
+
+    <div class="stat">
+      🎯 Level:
+      <strong id="levelNumber">1</strong>/10
+    </div>
+
+    <div class="stat">
+      ⭐ XP:
+      <strong id="score">0</strong>
+    </div>
+
+    <div class="stat">
+      ⏱️ Time:
+      <strong id="timer">30</strong>s
+    </div>
+
+  </div>
+
+  <div class="progress-container">
+    <div id="progressBar"></div>
+  </div>
+
+  <div class="challenge">
+
+    <h2 id="levelTitle">
+      Level 1
+    </h2>
+
+    <p id="mission" class="mission"></p>
+
+    <pre><code id="codeDisplay"></code></pre>
+
+    <div id="choices" class="choices"></div>
+
+    <div id="feedback">
+      Select your answer.
+    </div>
+
+    <button id="nextButton" onclick="nextLevel()">
+      NEXT LEVEL →
+    </button>
+
+  </div>
+
+</section>
+
+<!-- RESULTS -->
+
+<section id="resultScreen">
+
+  <div class="result-card">
+
+    <div style="font-size:55px;">🏆</div>
+
+    <h2>CODE QUEST COMPLETE!</h2>
+
+    <p>Your final score:</p>
+
+    <div id="finalScore" class="big-score">
+      0 XP
+    </div>
+
+    <p id="rankText"></p>
+
+    <button class="play-again" onclick="restartGame()">
+      PLAY AGAIN
+    </button>
+
+  </div>
+
+</section>
+
+<script>
+
+const levels = [
+
+  {
+    title: "LEVEL 1 — CODE ROOKIE",
+    mission: "Which is the correct C++ variable declaration?",
+    code: "Choose the correct line of code.",
+    choices: [
+      "int ledPin = 8;",
+      "int = ledPin 8;",
+      "ledPin int = 8",
+      "int ledPin == 8;"
+    ],
+    answer: 0,
+    explanation:
+      "Correct! int declares an integer variable, ledPin is the variable name, and 8 is its value."
+  },
+
+  {
+    title: "LEVEL 2 — SYNTAX FIXER",
+    mission: "Which line correctly fixes the missing semicolon?",
+    code:
+`int greenLED = 7
+
+void setup() {
+  pinMode(greenLED, OUTPUT);
+}`,
+    choices: [
+      "int greenLED = 7;",
+      "int greenLED; = 7",
+      "int greenLED = 7:",
+      "int greenLED == 7;"
+    ],
+    answer: 0,
+    explanation:
+      "Correct! Arduino C++ statements such as variable declarations normally end with a semicolon."
+  },
+
+  {
+    title: "LEVEL 3 — PIN COMMANDER",
+    mission: "The LED receives commands from Arduino. Complete the code.",
+    code:
+`int led = 8;
+
+void setup() {
+  pinMode(led, ______);
+}`,
+    choices: [
+      "INPUT",
+      "OUTPUT",
+      "HIGH",
+      "LOW"
+    ],
+    answer: 1,
+    explanation:
+      "Correct! The LED is an output device, so its pin should be configured as OUTPUT."
+  },
+
+  {
+    title: "LEVEL 4 — DIGITAL CONTROL",
+    mission: "Which command turns the LED ON?",
+    code:
+`int led = 8;
+
+void loop() {
+  __________
+}`,
+    choices: [
+      "digitalWrite(led, HIGH);",
+      "digitalRead(led);",
+      "digitalWrite(led, LOW);",
+      "analogRead(led);"
+    ],
+    answer: 0,
+    explanation:
+      "Correct! digitalWrite with HIGH sends a HIGH signal to the LED pin."
+  },
+
+  {
+    title: "LEVEL 5 — INPUT SCANNER",
+    mission: "Which function should read the push button state?",
+    code:
+`int button = 2;
+
+void loop() {
+  int state = __________(button);
+}`,
+    choices: [
+      "digitalWrite",
+      "analogWrite",
+      "digitalRead",
+      "pinMode"
+    ],
+    answer: 2,
+    explanation:
+      "Correct! digitalRead() reads the HIGH or LOW state of a digital input."
+  },
+
+  {
+    title: "LEVEL 6 — ANALOG SCANNER",
+    mission: "The MQ-135 sensor is connected to A0. Which function reads its analog value?",
+    code:
+`int airValue;
+
+void loop() {
+  airValue = __________(A0);
+}`,
+    choices: [
+      "digitalRead",
+      "analogRead",
+      "digitalWrite",
+      "pinMode"
+    ],
+    answer: 1,
+    explanation:
+      "Correct! analogRead(A0) reads the analog sensor value."
+  },
+
+  {
+    title: "LEVEL 7 — LOGIC GATE",
+    mission: "The red LED should turn ON when airValue is greater than 300.",
+    code:
+`if (airValue _____ 300) {
+  digitalWrite(redLED, HIGH);
+}
+else {
+  digitalWrite(redLED, LOW);
+}`,
+    choices: [
+      "<",
+      "=",
+      ">",
+      "=="
+    ],
+    answer: 2,
+    explanation:
+      "Correct! The > operator means greater than."
+  },
+
+  {
+    title: "LEVEL 8 — CODE DETECTIVE",
+    mission: "Find the incorrect part of the program.",
+    code:
+`int redLED = 8;
+
+void setup() {
+  pinMode(redLED, INPUT);
+}
+
+void loop() {
+  digitalWrite(redLED, HIGH);
+}`,
+    choices: [
+      "int redLED = 8;",
+      "void setup()",
+      "pinMode(redLED, INPUT);",
+      "digitalWrite(redLED, HIGH);"
+    ],
+    answer: 2,
+    explanation:
+      "Bug found! Since redLED is being controlled by Arduino, its pin mode should be OUTPUT."
+  },
+
+  {
+    title: "LEVEL 9 — OUTPUT PREDICTOR",
+    mission: "airValue is 425. What will happen to the red LED?",
+    code:
+`int airValue = 425;
+
+if (airValue > 300) {
+  digitalWrite(redLED, HIGH);
+}
+else {
+  digitalWrite(redLED, LOW);
+}`,
+    choices: [
+      "The red LED turns ON.",
+      "The red LED turns OFF.",
+      "Nothing happens.",
+      "Arduino stops."
+    ],
+    answer: 0,
+    explanation:
+      "Correct! 425 is greater than 300, so the IF block runs and the red LED is set to HIGH."
+  },
+
+  {
+    title: "LEVEL 10 — BOSS CODE 👑",
+    mission: "The air quality warning system is broken. Which line contains the main logic error?",
+    code:
+`airValue = analogRead(A0);
+
+if (airValue > 300) {
+
+  digitalWrite(redLED, LOW);
+  digitalWrite(greenLED, LOW);
+
+}
+else {
+
+  digitalWrite(redLED, LOW);
+  digitalWrite(greenLED, HIGH);
+
+}`,
+    choices: [
+      "airValue = analogRead(A0);",
+      "if (airValue > 300)",
+      "digitalWrite(redLED, LOW); inside IF",
+      "digitalWrite(greenLED, HIGH); inside ELSE"
+    ],
+    answer: 2,
+    explanation:
+      "Boss defeated! When airValue is above 300, the warning red LED should be HIGH, not LOW."
+  }
+
+];
+
+let currentLevel = 0;
+let score = 0;
+let timeLeft = 30;
+let timerInterval;
+let answered = false;
+
+function startGame() {
+
+  currentLevel = 0;
+  score = 0;
+
+  document.getElementById("mainMenu").style.display = "none";
+  document.getElementById("resultScreen").style.display = "none";
+  document.getElementById("gameScreen").style.display = "block";
+
+  loadLevel();
+}
+
+function loadLevel() {
+
+  answered = false;
+
+  const level = levels[currentLevel];
+
+  document.getElementById("levelNumber").textContent =
+    currentLevel + 1;
+
+  document.getElementById("levelTitle").textContent =
+    level.title;
+
+  document.getElementById("mission").textContent =
+    level.mission;
+
+  document.getElementById("codeDisplay").textContent =
+    level.code;
+
+  document.getElementById("score").textContent =
+    score;
+
+  document.getElementById("progressBar").style.width =
+    ((currentLevel + 1) / levels.length * 100) + "%";
+
+  document.getElementById("feedback").textContent =
+    "Select your answer.";
+
+  document.getElementById("nextButton").style.display =
+    "none";
+
+  const choicesContainer =
+    document.getElementById("choices");
+
+  choicesContainer.innerHTML = "";
+
+  level.choices.forEach((choice, index) => {
+
+    const button =
+      document.createElement("button");
+
+    button.className = "choice";
+    button.textContent = choice;
+
+    button.onclick = function() {
+      checkAnswer(index);
+    };
+
+    choicesContainer.appendChild(button);
+
+  });
+
+  startTimer();
+}
+
+function startTimer() {
+
+  clearInterval(timerInterval);
+
+  timeLeft =
+    currentLevel === 9 ? 60 : 30;
+
+  document.getElementById("timer").textContent =
+    timeLeft;
+
+  timerInterval = setInterval(function() {
+
+    timeLeft--;
+
+    document.getElementById("timer").textContent =
+      timeLeft;
+
+    if (timeLeft <= 0) {
+
+      clearInterval(timerInterval);
+
+      if (!answered) {
+
+        answered = true;
+
+        document.getElementById("feedback").innerHTML =
+          "⏰ Time's up! No XP earned for this level.";
+
+        disableChoices();
+
+        document.getElementById("nextButton").style.display =
+          "block";
+      }
+    }
+
+  }, 1000);
+}
+
+function checkAnswer(selected) {
+
+  if (answered) return;
+
+  answered = true;
+
+  clearInterval(timerInterval);
+
+  const level = levels[currentLevel];
+
+  if (selected === level.answer) {
+
+    let earnedXP = 100;
+
+    if (timeLeft >= 20) {
+      earnedXP += 50;
+    }
+    else if (timeLeft >= 10) {
+      earnedXP += 25;
+    }
+
+    score += earnedXP;
+
+    document.getElementById("feedback").innerHTML =
+      "✅ <strong>Correct! +" +
+      earnedXP +
+      " XP</strong><br><br>" +
+      level.explanation;
+
+  }
+
+  else {
+
+    document.getElementById("feedback").innerHTML =
+      "❌ <strong>Incorrect.</strong><br><br>" +
+      level.explanation;
+
+  }
+
+  document.getElementById("score").textContent =
+    score;
+
+  disableChoices();
+
+  document.getElementById("nextButton").style.display =
+    "block";
+}
+
+function disableChoices() {
+
+  const buttons =
+    document.querySelectorAll(".choice");
+
+  buttons.forEach(function(button) {
+    button.disabled = true;
+  });
+}
+
+function nextLevel() {
+
+  currentLevel++;
+
+  if (currentLevel >= levels.length) {
+
+    finishGame();
+
+  }
+
+  else {
+
+    loadLevel();
+
+  }
+}
+
+function finishGame() {
+
+  clearInterval(timerInterval);
+
+  document.getElementById("gameScreen").style.display =
+    "none";
+
+  document.getElementById("resultScreen").style.display =
+    "block";
+
+  document.getElementById("finalScore").textContent =
+    score + " XP";
+
+  let rank;
+
+  if (score >= 1300) {
+    rank = "👑 C++ CODE MASTER";
+  }
+
+  else if (score >= 1000) {
+    rank = "💻 ARDUINO DEBUGGER";
+  }
+
+  else if (score >= 700) {
+    rank = "🤖 CODE EXPLORER";
+  }
+
+  else {
+    rank = "🔧 CODE ROOKIE";
+  }
+
+  document.getElementById("rankText").innerHTML =
+    "Your Rank:<br><strong>" + rank + "</strong>";
+}
+
+function restartGame() {
+
+  document.getElementById("resultScreen").style.display =
+    "none";
+
+  startGame();
+}
+
+function goHome() {
+
+  clearInterval(timerInterval);
+
+  document.getElementById("gameScreen").style.display =
+    "none";
+
+  document.getElementById("resultScreen").style.display =
+    "none";
+
+  document.getElementById("mainMenu").style.display =
+    "block";
+}
+
+</script>
+
+</body>
+</html>
